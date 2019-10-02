@@ -18,8 +18,10 @@ sockets = Sockets(app)
 def dataChanel(ws):
     """Send data."""
     while not ws.closed:
-        ws.send(Daq_data)
-        time.sleep(0.05)
+        while True:
+            ws.send(Daq_data)
+            time.sleep(0.05)
+            print(Daq_data)
         # connection, client_address = sock.accept()
         # try:
         #     msj = ""
@@ -47,7 +49,7 @@ def hello():
     return 'Hello World!'
 
 @app.route('/create_connection')
-def hello():
+def conn():
     connection, client_address = sock.accept()
     try:
         msj = ""
@@ -57,7 +59,6 @@ def hello():
                 msj += data
             elif data == "\n":
                 Daq_data = copy.copy(msj)
-                print(Daq_data)
                 msj = ""     
     finally:
         connection.close()
